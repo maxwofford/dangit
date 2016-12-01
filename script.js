@@ -1,4 +1,4 @@
-var song, analyzer
+var mic
 
 function componentToHex(c) {
   var hex = c.toString(16);
@@ -22,24 +22,22 @@ function sendColor(color) {
 }
 
 function preload() {
-  song = loadSound('music.wav')
   frameRate(10)
 }
 
 function setup() {
   createCanvas(200, 300)
-  song.loop()
-  analyzer = new p5.Amplitude()
-  analyzer.setInput(song)
+  mic = new p5.AudioIn();
+  mic.start()
 }
 
 function draw() {
   background(255)
-  var rms = analyzer.getLevel()
+  var vol = mic.getLevel()
   fill(127)
   stroke(0)
 
-  ellipse(width/2, height/2, 10+rms*200, 10+rms*200)
-  var hex = rgbToHex(Math.round(rms * 255), Math.round(rms * 255), Math.round(rms * 255))
+  ellipse(width/2, height/2, 10+vol*200, 10+vol*200)
+  var hex = rgbToHex(Math.round(vol * 255), Math.round(vol * 255), Math.round(vol * 255))
   sendColor(hex)
 }
